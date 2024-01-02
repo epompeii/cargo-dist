@@ -295,3 +295,12 @@ jobs:
           body: ${{ fromJson(needs.host.outputs.val).announcement_github_body }}
           prerelease: ${{ fromJson(needs.host.outputs.val).announcement_is_prerelease }}
           artifacts: "artifacts/*"
+
+  custom-publish-release:
+    needs:
+      - plan
+      - announce
+    uses: ./.github/workflows/publish-release.yml
+    with:
+      plan: ${{ needs.plan.outputs.val }}
+    secrets: inherit
