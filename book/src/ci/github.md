@@ -69,10 +69,19 @@ If you set `create-release = false` in your cargo-dist config, cargo-dist will a
 
 > since 0.3.0
 
-cargo-dist's CI can be configured to call additional jobs on top of the ones it has builtin. Currently, we support adding extra jobs to the publish step; in the future, we'll allow extending all of the lifecycle steps of the CI workflow. To add one, you need to follow two steps:
+cargo-dist's CI can be configured to call additional jobs on top of the ones it has builtin. Currently, we support adding extra jobs to the the following list of steps:
+
+* [`plan-jobs`][config-plan] (the beginning of the build process)
+* [`build-local-artifacts-jobs`][config-build-local]
+* [`build-global-artifacts-jobs`][config-build-global]
+* [`host-jobs`][config-host-jobs] (pre-publish)
+* [`publish-jobs`][config-publish-jobs]
+* [`post-announce-jobs`][config-post-announce] (after the release is created)
+
+To add a custom job, you need to follow two steps:
 
 1. Define the new job as a reusable workflow using the standard method defined by your CI system. For GitHub actions, see the documentation on [reusable workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows#creating-a-reusable-workflow).
-2. Add the name of your new workflow file to the `publish-jobs` array in your `Cargo.toml`'s cargo-dist config, prefixed with a `./`. For example, if your job name is `.github/workflows/my-publish.yml`, you would write it like this:
+2. Add the name of your new workflow file to the appropriate array in your `Cargo.toml`'s cargo-dist config, prefixed with a `./`. For example, if your job name is `.github/workflows/my-publish.yml`, you would write it like this:
 
 ```toml
 publish-jobs = ["./my-publish"]
@@ -217,6 +226,12 @@ The Windows report is currently unable to provide information about the sources 
 [config-allow-dirty]: ../reference/config.md#allow-dirty
 [config-pr-run-mode]: ../reference/config.md#pr-run-mode
 [config-dependencies]: ../reference/config.md#dependencies
+[config-plan]: ../reference/config.md#plan-jobs
+[config-build-local]: ../reference/config.md#build-local-artifacts-jobs
+[config-build-global]: ../reference/config.md#build-global-artifacts-jobs
+[host-jobs]: ../reference/config.md#host-jobs
+[publish-jobs]: ../reference/config.md#publish-jobs
+[post-announce-jobs]: ../reference/config.md#post-announce-jobs
 
 [artifact-url]: ../reference/artifact-url.md#github
 [quickstart]: ../way-too-quickstart.md
